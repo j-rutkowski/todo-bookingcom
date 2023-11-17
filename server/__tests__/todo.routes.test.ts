@@ -119,6 +119,44 @@ describe('Todo API Endpoints', () => {
         });
     });
 
+    // Test PUT endpoint
+    it('should update a Todo by ID', async () => {
+        const response = await request(server)
+            .put('/api/todos/1')
+            .send({ title: 'Updated Todo', completed: true });
+
+        expect(response.status).toBe(200);
+        expect(response.body).toEqual({
+            id: 1,
+            title: 'Updated Todo',
+            completed: true,
+        });
+    });
+
+    it('should return 404 if no Todo with given ID exists', async () => {
+        const response = await request(server)
+            .put('/api/todos/999')
+            .send(mockTodo);
+
+        expect(response.status).toBe(404);
+        expect(response.text).toBe('Todo not found');
+    });
+
+    it("should return 400 when updating a todo with an invalid completed status", async () => {
+        const response = await request(server)
+            .put(`/api/todos/1`)
+            .send({ title: "New Title", completed: "invalid" });
+
+        expect(response.status).toBe(400);
+        expect(response.body.errors).toContainEqual({
+            "type": "field",
+            "value": "invalid",
+            "msg": "Completed must be a boolean",
+            "path": "completed",
+            "location": "body"
+        });
+    });
+
     // Test DELETE endpoint
     it('should delete a Todo by ID', async () => {
         const response = await request(server).delete('/api/todos/1');
