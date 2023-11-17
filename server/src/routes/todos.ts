@@ -1,5 +1,6 @@
 import { Router, Request, Response } from 'express';
 import { body, check, validationResult } from 'express-validator';
+import { validateRequest } from '../middlewares/validateRequest';
 import { Todo } from '../models/Todo';
 import { TodoList } from "../models/TodoList";
 
@@ -18,13 +19,7 @@ const idValidators = [
     check('id').isInt({ min: 1 }).withMessage('ID must be greater than 0'),
 ];
 
-router.post('/', titleValidators, (req: Request, res: Response) => {
-    const errors = validationResult(req);
-
-    if (!errors.isEmpty()) {
-        return res.status(400).json({ errors: errors.array() });
-    }
-
+router.post('/', titleValidators, validateRequest, (req: Request, res: Response) => {
     const todo: Todo = {
         id: todoList.size() + 1,
         title: req.body.title,
@@ -35,17 +30,11 @@ router.post('/', titleValidators, (req: Request, res: Response) => {
     res.status(201).json(todo);
 });
 
-router.get('/', (req: Request, res: Response) => {
+router.get('/', validateRequest, (req: Request, res: Response) => {
     res.json(todoList.getAll());
 });
 
-router.get('/:id', idValidators, (req: Request, res: Response) => {
-    const errors = validationResult(req);
-
-    if (!errors.isEmpty()) {
-        return res.status(400).json({ errors: errors.array() });
-    }
-
+router.get('/:id', idValidators, validateRequest, (req: Request, res: Response) => {
     const id = parseInt(req.params.id);
     const todo = todoList.getById(id);
 
@@ -56,13 +45,7 @@ router.get('/:id', idValidators, (req: Request, res: Response) => {
     }
 });
 
-router.delete('/:id', idValidators, (req: Request, res: Response) => {
-    const errors = validationResult(req);
-
-    if (!errors.isEmpty()) {
-        return res.status(400).json({ errors: errors.array() });
-    }
-
+router.delete('/:id', idValidators, validateRequest, (req: Request, res: Response) => {
     const id = parseInt(req.params.id);
 
     if (todoList.removeById(id)) {
