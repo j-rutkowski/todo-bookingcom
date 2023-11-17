@@ -1,5 +1,5 @@
 import { Router, Request, Response } from 'express';
-import { body, check, validationResult } from 'express-validator';
+import { body, check } from 'express-validator';
 import { validateRequest } from '../middlewares/validateRequest';
 import { Todo } from '../models/Todo';
 import { TodoList } from "../models/TodoList";
