@@ -8,6 +8,10 @@ export class TodoList {
      * @param title - Title of the TODO to be added.
      */
     public add(title: string): Todo {
+        if (title.length === 0) {
+            throw new Error('Todo title cannot be empty');
+        }
+
         const todo: Todo = {
             id: this.todos.length + 1,
             title,
