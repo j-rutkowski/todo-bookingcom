@@ -12,6 +12,10 @@ const titleValidators = [
     body('title').isLength({ min: 1 }).withMessage('Title cannot be empty'),
     body('title').isLength({ max: 100 }).withMessage('Title cannot be longer than 100 characters'),
 ];
+const completedValidators = [
+    body('completed').exists().withMessage('Completed is required'),
+    body('completed').isBoolean().withMessage('Completed must be a boolean'),
+];
 const idValidators = [
     check('id').exists().withMessage('ID is required'),
     check('id').isInt().withMessage('ID must be an integer'),
@@ -34,6 +38,21 @@ router.get('/:id', idValidators, validateRequest, (req: Request, res: Response) 
     if (!todo) {
         res.status(404).send('Todo not found');
     } else {
+        res.json(todo);
+    }
+});
+
+router.put('/:id', [...idValidators, ...titleValidators, ...completedValidators], validateRequest, (req: Request, res: Response) => {
+    const id = parseInt(req.params.id);
+    const completed = req.body.completed;
+    const todo = todoList.getById(id);
+
+    if (!todo) {
+        res.status(404).send('Todo not found');
+    } else {
+        todo.title = req.body.title;
+        todo.completed = completed;
+
         res.json(todo);
     }
 });
