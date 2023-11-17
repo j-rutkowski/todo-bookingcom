@@ -5,10 +5,17 @@ export class TodoList {
 
     /**
      * Adds a new TODO item to the list.
-     * @param todo - The TODO item to be added.
+     * @param title - Title of the TODO to be added.
      */
-    public add(todo: Todo): void {
+    public add(title: string): Todo {
+        const todo: Todo = {
+            id: this.todos.length + 1,
+            title,
+            completed: false,
+        }
+
         this.todos.push(todo);
+        return todo;
     }
 
     /**

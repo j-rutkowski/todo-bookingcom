@@ -20,13 +20,7 @@ const idValidators = [
 ];
 
 router.post('/', titleValidators, validateRequest, (req: Request, res: Response) => {
-    const todo: Todo = {
-        id: todoList.size() + 1,
-        title: req.body.title,
-        completed: false,
-    };
-
-    todoList.add(todo);
+    const todo = todoList.add(req.body.title);
     res.status(201).json(todo);
 });
 
