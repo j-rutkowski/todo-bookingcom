@@ -1,6 +1,6 @@
 import request = require('supertest');
-import { server } from '../src';
-import { TaskType } from '../../shared/models/TaskType';
+import { server } from '../index';
+import { TaskType } from '../../../shared/models/TaskType';
 
 // Mock task for testing
 const mockTask: TaskType = {

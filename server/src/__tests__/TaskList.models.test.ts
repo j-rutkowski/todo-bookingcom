@@ -1,5 +1,5 @@
-import { TaskList } from "../../shared/models/TaskList";
-import { TaskType } from "../../shared/models/TaskType";
+import { TaskList } from "../../../shared/models/TaskList";
+import { TaskType } from "../../../shared/models/TaskType";
 
 describe("TaskList", () => {
     let taskList: TaskList;
