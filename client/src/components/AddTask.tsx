@@ -27,12 +27,12 @@ function AddTask({ tasks, setTasks }: AddTaskProps) {
             body: JSON.stringify({ title: taskName })
         });
 
-        if (!response.ok) {
-            const errorData = await response.json();
-            return Promise.reject(errorData.errors[0]);
-        }
+            if (!response.ok) {
+                const errorData = await response.json();
+                return Promise.reject(errorData.errors[0]);
+            }
 
-        return await response.json();
+            return await response.json();
     }
 
     /**
@@ -61,6 +61,10 @@ function AddTask({ tasks, setTasks }: AddTaskProps) {
         }
 
         if (e.key === 'Enter') {
+            // Blur the input when submitting the task
+            const input = e.target as HTMLInputElement;
+            input.blur();
+
             handleClick();
         }
     }
@@ -80,7 +84,9 @@ function AddTask({ tasks, setTasks }: AddTaskProps) {
                     className='add-task__button'
                     onClick={handleClick}
                 >
-                    Add
+                    <svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 448 512">
+                        <path fill="#FFFFFF" d="M256 80c0-17.7-14.3-32-32-32s-32 14.3-32 32V224H48c-17.7 0-32 14.3-32 32s14.3 32 32 32H192V432c0 17.7 14.3 32 32 32s32-14.3 32-32V288H400c17.7 0 32-14.3 32-32s-14.3-32-32-32H256V80z"/>
+                    </svg>
                 </button>
             </div>
             <span className={`add-task__error ${error ? '' : 'hidden'}`}>{error}</span>

@@ -18,6 +18,11 @@
         border-radius: 4px;
         font-size: 16px;
         outline: none;
+        transition: all 0.3s ease-in-out;
+
+        &:focus {
+            border: 1px solid rgb(var(--color-secondary-blue));
+        }
     }
 
     &__button {
@@ -25,18 +30,20 @@
         height: 40px;
         padding: 0 16px;
         border-radius: 4px;
-        background-color: #3f51b5;
-        border: 1px solid #3f51b5;
+        background-color: rgb(var(--color-primary-blue));
+        border: 1px solid rgb(var(--color-primary-blue));
         color: #fff;
         font-size: 16px;
         cursor: pointer;
-        font-weight: 500;
+        font-weight: 600;
         text-transform: uppercase;
         transition: all 0.3s ease-in-out;
+        display: grid;
+        place-items: center;
 
         &:hover {
-            background-color: #303f9f;
-            border: 1px solid #303f9f;
+            background-color: rgba(var(--color-primary-blue), 0.8);
+            border: 1px solid rgba(var(--color-primary-blue), 0.8);
         }
     }
 
