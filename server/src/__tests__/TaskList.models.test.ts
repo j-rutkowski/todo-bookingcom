@@ -43,6 +43,29 @@ describe("TaskList", () => {
         expect(taskList.getById(999)).toBeUndefined();
     });
 
+    it("should update a task by id", () => {
+        const task = taskList.add("Example Task");
+        const updatedTask = taskList.updateById(task.id, "Updated Task", true);
+
+        expect(updatedTask).toEqual({
+            id: task.id,
+            title: "Updated Task",
+            completed: true,
+        });
+    });
+
+    it("should return undefined when updating a task by an id that doesn't exist", () => {
+        const updatedTask = taskList.updateById(999, "Updated Task", true);
+
+        expect(updatedTask).toBeUndefined();
+    });
+
+    it("should throw an error when updating a task with an empty title", () => {
+        const task = taskList.add("Example Task");
+
+        expect(() => taskList.updateById(task.id, "", true)).toThrow("Task title cannot be empty");
+    });
+
     it("should remove task by id", () => {
         const task: TaskType = { id: 1, title: "Example Task", completed: false };
         taskList.add(task.title);

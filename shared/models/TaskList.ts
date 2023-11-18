@@ -55,6 +55,15 @@ export class TaskList {
         }
     }
 
+    /**
+     * Updates a task item by its ID.
+     *
+     * @param {number} id - The ID of the task item to update.
+     * @param {string} title - The new title of the task item.
+     * @param {boolean} completed - The new completed status of the task item.
+     * @returns {TaskType | undefined} The updated task item, or undefined if not found.
+     * @throws Will throw an error if the new title is empty.
+     */
     public updateById(id: number, title: string, completed: boolean): TaskType | undefined {
         const index = this.tasks.findIndex((t) => t.id === id);
 
