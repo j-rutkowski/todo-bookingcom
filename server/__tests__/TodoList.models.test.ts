@@ -1,70 +1,70 @@
-import { TodoList } from "../../shared/models/TodoList";
-import { Todo } from "../../shared/models/Todo";
+import { TaskList } from "../../shared/models/TaskList";
+import { TaskType } from "../../shared/models/TaskType";
 
-describe("TodoList", () => {
-    let todoList: TodoList;
+describe("TaskList", () => {
+    let taskList: TaskList;
 
-    // Set up a new TodoList instance before each test.
+    // Set up a new TaskList instance before each test.
     beforeEach(() => {
-        todoList = new TodoList();
+        taskList = new TaskList();
     });
 
-    it("should add a todo", () => {
-        const todo: Todo = { id: 1, title: "Example Todo", completed: false };
+    it("should add a task", () => {
+        const task: TaskType = { id: 1, title: "Example Task", completed: false };
 
-        todoList.add(todo.title);
+        taskList.add(task.title);
 
-        expect(todoList.getAll()).toContainEqual(todo);
+        expect(taskList.getAll()).toContainEqual(task);
     });
 
-    it("should not add a todo with an empty title", () => {
-        expect(() => todoList.add("")).toThrow("Todo title cannot be empty");
+    it("should not add a task with an empty title", () => {
+        expect(() => taskList.add("")).toThrow("Task title cannot be empty");
     });
 
-    it("should get all todos", () => {
-        const todos: Todo[] = [
-            { id: 1, title: "Todo 1", completed: false },
-            { id: 2, title: "Todo 2", completed: false },
+    it("should get all tasks", () => {
+        const tasks: TaskType[] = [
+            { id: 1, title: "Task 1", completed: false },
+            { id: 2, title: "Task 2", completed: false },
         ];
-        todos.forEach((todo) => todoList.add(todo.title));
+        tasks.forEach((task) => taskList.add(task.title));
 
-        expect(todoList.getAll()).toEqual(expect.arrayContaining(todos));
+        expect(taskList.getAll()).toEqual(expect.arrayContaining(tasks));
     });
 
-    it("should get todo by id", () => {
-        const todo: Todo = { id: 1, title: "Example Todo", completed: false };
-        todoList.add(todo.title);
+    it("should get task by id", () => {
+        const task: TaskType = { id: 1, title: "Example Task", completed: false };
+        taskList.add(task.title);
 
-        expect(todoList.getById(1)).toEqual(todo);
-        expect(todoList.getById(2)).toBeUndefined();
+        expect(taskList.getById(1)).toEqual(task);
+        expect(taskList.getById(2)).toBeUndefined();
     });
 
-    it("should return undefined when getting a todo by an id that doesn't exist", () => {
-        expect(todoList.getById(999)).toBeUndefined();
+    it("should return undefined when getting a task by an id that doesn't exist", () => {
+        expect(taskList.getById(999)).toBeUndefined();
     });
 
-    it("should remove todo by id", () => {
-        const todo: Todo = { id: 1, title: "Example Todo", completed: false };
-        todoList.add(todo.title);
+    it("should remove task by id", () => {
+        const task: TaskType = { id: 1, title: "Example Task", completed: false };
+        taskList.add(task.title);
 
-        expect(todoList.removeById(1)).toBeTruthy();
-        expect(todoList.removeById(2)).toBeFalsy();
-        expect(todoList.getAll()).not.toContain(todo);
+        expect(taskList.removeById(1)).toBeTruthy();
+        expect(taskList.removeById(2)).toBeFalsy();
+        expect(taskList.getAll()).not.toContain(task);
     });
 
-    it("should return false when removing a todo that doesn't exist", () => {
-        expect(todoList.removeById(999)).toBeFalsy();
+    it("should return false when removing a task that doesn't exist", () => {
+        expect(taskList.removeById(999)).toBeFalsy();
     });
 
-    it("should get the number of todos", () => {
-        const todos: Todo[] = [
-            { id: 1, title: "Todo 1", completed: false },
-            { id: 2, title: "Todo 2", completed: false },
-            { id: 3, title: "Todo 3", completed: false },
+    it("should get the number of tasks", () => {
+        const tasks: TaskType[] = [
+            { id: 1, title: "Task 1", completed: false },
+            { id: 2, title: "Task 2", completed: false },
+            { id: 3, title: "Task 3", completed: false },
         ];
 
-        todos.forEach((todo) => todoList.add(todo.title));
+        tasks.forEach((task) => taskList.add(task.title));
 
-        expect(todoList.size()).toBe(todos.length);
+        expect(taskList.size()).toBe(tasks.length);
     });
 });

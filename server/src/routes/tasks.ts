@@ -1,10 +1,10 @@
 import { Router, Request, Response } from 'express';
 import { body, check } from 'express-validator';
 import { validateRequest } from '../middlewares/validateRequest';
-import { TodoList } from "../../../shared/models/TodoList";
+import { TaskList } from "../../../shared/models/TaskList";
 
 const router = Router();
-const todoList = new TodoList();
+const taskList = new TaskList();
 
 const titleValidators = [
     body('title').exists().withMessage('Title is required'),
@@ -23,47 +23,47 @@ const idValidators = [
 ];
 
 router.post('/', titleValidators, validateRequest, (req: Request, res: Response) => {
-    const todo = todoList.add(req.body.title);
-    res.status(201).json(todo);
+    const task = taskList.add(req.body.title);
+    res.status(201).json(task);
 });
 
 router.get('/', validateRequest, (req: Request, res: Response) => {
-    res.json(todoList.getAll());
+    res.json(taskList.getAll());
 });
 
 router.get('/:id', idValidators, validateRequest, (req: Request, res: Response) => {
     const id = parseInt(req.params.id);
-    const todo = todoList.getById(id);
+    const task = taskList.getById(id);
 
-    if (!todo) {
-        res.status(404).send('Todo not found');
+    if (!task) {
+        res.status(404).send('Task not found');
     } else {
-        res.json(todo);
+        res.json(task);
     }
 });
 
 router.put('/:id', [...idValidators, ...titleValidators, ...completedValidators], validateRequest, (req: Request, res: Response) => {
     const id = parseInt(req.params.id);
     const completed = req.body.completed;
-    const todo = todoList.getById(id);
+    const task = taskList.getById(id);
 
-    if (!todo) {
-        res.status(404).send('Todo not found');
+    if (!task) {
+        res.status(404).send('Task not found');
     } else {
-        todo.title = req.body.title;
-        todo.completed = completed;
+        task.title = req.body.title;
+        task.completed = completed;
 
-        res.json(todo);
+        res.json(task);
     }
 });
 
 router.delete('/:id', idValidators, validateRequest, (req: Request, res: Response) => {
     const id = parseInt(req.params.id);
 
-    if (todoList.removeById(id)) {
+    if (taskList.removeById(id)) {
         res.status(204).send();
     } else {
-        res.status(404).send('Todo not found');
+        res.status(404).send('Task not found');
     }
 });
 

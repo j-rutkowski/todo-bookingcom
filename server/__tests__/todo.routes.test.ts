@@ -1,11 +1,11 @@
 import request = require('supertest');
 import { server } from '../src';
-import { Todo } from '../../shared/models/Todo';
+import { TaskType } from '../../shared/models/TaskType';
 
-// Mock todo for testing
-const mockTodo: Todo = {
+// Mock task for testing
+const mockTask: TaskType = {
     id: 1,
-    title: 'Test Todo',
+    title: 'Test Task',
     completed: false,
 };
 
@@ -14,21 +14,21 @@ afterAll(() => {
     server.close();
 });
 
-describe('Todo API Endpoints', () => {
+describe('Task API Endpoints', () => {
     // Test POST endpoint
-    it('should create a new Todo', async () => {
+    it('should create a new Task', async () => {
         const response = await request(server)
-            .post('/api/todos')
-            .send({ title: 'Test Todo' });
+            .post('/api/tasks')
+            .send({ title: 'Test Task' });
 
         expect(response.status).toBe(201);
         expect(response.body).toHaveProperty('id');
-        expect(response.body.title).toBe('Test Todo');
+        expect(response.body.title).toBe('Test Task');
     });
 
     it('should return 400 if title is not provided', async () => {
         const response = await request(server)
-            .post('/api/todos')
+            .post('/api/tasks')
             .send({});
 
         expect(response.status).toBe(400);
@@ -42,7 +42,7 @@ describe('Todo API Endpoints', () => {
 
     it('should return 400 if title is not a string', async () => {
         const response = await request(server)
-            .post('/api/todos')
+            .post('/api/tasks')
             .send({ title: 123 });
 
         expect(response.status).toBe(400);
@@ -57,7 +57,7 @@ describe('Todo API Endpoints', () => {
 
     it('should return 400 if title is longer than 100 chars', async () => {
         const response = await request(server)
-            .post('/api/todos')
+            .post('/api/tasks')
             .send({ title: 'a'.repeat(101) });
 
         expect(response.status).toBe(400);
@@ -71,30 +71,30 @@ describe('Todo API Endpoints', () => {
     });
 
     // Test GET endpoint
-    it('should get all Todos', async () => {
-        const response = await request(server).get('/api/todos');
+    it('should get all Tasks', async () => {
+        const response = await request(server).get('/api/tasks');
 
         expect(response.status).toBe(200);
-        expect(response.body).toEqual([mockTodo]);
+        expect(response.body).toEqual([mockTask]);
     });
 
     // Test GET by ID endpoint
-    it('should get a Todo by ID', async () => {
-        const response = await request(server).get('/api/todos/1');
+    it('should get a Task by ID', async () => {
+        const response = await request(server).get('/api/tasks/1');
 
         expect(response.status).toBe(200);
-        expect(response.body).toEqual(mockTodo);
+        expect(response.body).toEqual(mockTask);
     });
 
-    it('should return 404 if no Todo with given ID exists', async () => {
-        const response = await request(server).get('/api/todos/999');
+    it('should return 404 if no Task with given ID exists', async () => {
+        const response = await request(server).get('/api/tasks/999');
 
         expect(response.status).toBe(404);
-        expect(response.text).toBe('Todo not found');
+        expect(response.text).toBe('Task not found');
     });
 
     it('should return 400 if id is not an integer', async () => {
-        const response = await request(server).get('/api/todos/string');
+        const response = await request(server).get('/api/tasks/string');
 
         expect(response.status).toBe(400);
         expect(response.body.errors).toContainEqual({
@@ -107,7 +107,7 @@ describe('Todo API Endpoints', () => {
     });
 
     it('should return 400 if id is less than 1', async () => {
-        const response = await request(server).get('/api/todos/0');
+        const response = await request(server).get('/api/tasks/0');
 
         expect(response.status).toBe(400);
         expect(response.body.errors).toContainEqual({
@@ -120,31 +120,31 @@ describe('Todo API Endpoints', () => {
     });
 
     // Test PUT endpoint
-    it('should update a Todo by ID', async () => {
+    it('should update a Task by ID', async () => {
         const response = await request(server)
-            .put('/api/todos/1')
-            .send({ title: 'Updated Todo', completed: true });
+            .put('/api/tasks/1')
+            .send({ title: 'Updated Task', completed: true });
 
         expect(response.status).toBe(200);
         expect(response.body).toEqual({
             id: 1,
-            title: 'Updated Todo',
+            title: 'Updated Task',
             completed: true,
         });
     });
 
-    it('should return 404 if no Todo with given ID exists', async () => {
+    it('should return 404 if no Task with given ID exists', async () => {
         const response = await request(server)
-            .put('/api/todos/999')
-            .send(mockTodo);
+            .put('/api/tasks/999')
+            .send(mockTask);
 
         expect(response.status).toBe(404);
-        expect(response.text).toBe('Todo not found');
+        expect(response.text).toBe('Task not found');
     });
 
-    it("should return 400 when updating a todo with an invalid completed status", async () => {
+    it("should return 400 when updating a task with an invalid completed status", async () => {
         const response = await request(server)
-            .put(`/api/todos/1`)
+            .put(`/api/tasks/1`)
             .send({ title: "New Title", completed: "invalid" });
 
         expect(response.status).toBe(400);
@@ -158,14 +158,14 @@ describe('Todo API Endpoints', () => {
     });
 
     // Test DELETE endpoint
-    it('should delete a Todo by ID', async () => {
-        const response = await request(server).delete('/api/todos/1');
+    it('should delete a Task by ID', async () => {
+        const response = await request(server).delete('/api/tasks/1');
 
         expect(response.status).toBe(204);
     });
 
-    it('should return 404 if no Todo with given ID exists', async () => {
-        const response = await request(server).delete('/api/todos/999');
+    it('should return 404 if no Task with given ID exists', async () => {
+        const response = await request(server).delete('/api/tasks/999');
 
         expect(response.status).toBe(404);
     });
