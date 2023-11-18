@@ -1,7 +1,7 @@
 import { Router, Request, Response } from 'express';
 import { body, check } from 'express-validator';
 import { validateRequest } from '../middlewares/validateRequest';
-import { TodoList } from "../models/TodoList";
+import { TodoList } from "../../../shared/models/TodoList";
 
 const router = Router();
 const todoList = new TodoList();

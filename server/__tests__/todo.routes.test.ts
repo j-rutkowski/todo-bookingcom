@@ -1,6 +1,6 @@
 import request = require('supertest');
 import { server } from '../src';
-import { Todo } from '../src/models/Todo';
+import { Todo } from '../../shared/models/Todo';
 
 // Mock todo for testing
 const mockTodo: Todo = {

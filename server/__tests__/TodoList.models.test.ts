@@ -1,5 +1,5 @@
-import { TodoList } from "../src/models/TodoList";
-import { Todo } from "../src/models/Todo";
+import { TodoList } from "../../shared/models/TodoList";
+import { Todo } from "../../shared/models/Todo";
 
 describe("TodoList", () => {
     let todoList: TodoList;
