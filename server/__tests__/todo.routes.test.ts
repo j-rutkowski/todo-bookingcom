@@ -121,16 +121,21 @@ describe('Task API Endpoints', () => {
 
     // Test PUT endpoint
     it('should update a Task by ID', async () => {
-        const response = await request(server)
-            .put('/api/tasks/1')
-            .send({ title: 'Updated Task', completed: true });
-
-        expect(response.status).toBe(200);
-        expect(response.body).toEqual({
+        const completedTask: TaskType = {
             id: 1,
             title: 'Updated Task',
             completed: true,
-        });
+        }
+        const response = await request(server)
+            .put(`/api/tasks/${completedTask.id}`)
+            .send({ title: completedTask.title, completed: completedTask.completed });
+
+        const updatedTask = await request(server)
+            .get(`/api/tasks/${completedTask.id}`);
+
+        expect(response.status).toBe(200);
+        expect(response.body).toEqual(completedTask);
+        expect(updatedTask.body).toEqual(completedTask);
     });
 
     it('should return 404 if no Task with given ID exists', async () => {

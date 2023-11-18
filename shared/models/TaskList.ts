@@ -55,6 +55,20 @@ export class TaskList {
         }
     }
 
+    public updateById(id: number, title: string, completed: boolean): TaskType | undefined {
+        const index = this.tasks.findIndex((t) => t.id === id);
+
+        if (index === -1) {
+            return undefined;
+        } else if (title.length === 0) {
+            throw new Error('Task title cannot be empty');
+        } else {
+            this.tasks[index].title = title;
+            this.tasks[index].completed = completed;
+            return this.tasks[index];
+        }
+    }
+
     /**
      * Gets the number of task items in the list.
      * @returns The number of task items.

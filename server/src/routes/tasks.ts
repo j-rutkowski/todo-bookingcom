@@ -44,15 +44,13 @@ router.get('/:id', idValidators, validateRequest, (req: Request, res: Response) 
 
 router.put('/:id', [...idValidators, ...titleValidators, ...completedValidators], validateRequest, (req: Request, res: Response) => {
     const id = parseInt(req.params.id);
+    const title = req.body.title;
     const completed = req.body.completed;
-    const task = taskList.getById(id);
+    const task = taskList.updateById(id, title, completed);
 
     if (!task) {
         res.status(404).send('Task not found');
     } else {
-        task.title = req.body.title;
-        task.completed = completed;
-
         res.json(task);
     }
 });
