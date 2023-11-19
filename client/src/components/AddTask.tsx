@@ -1,6 +1,7 @@
 import './AddTask.scss';
 import { useState } from "react";
 import { TaskType } from "../../../shared/models/TaskType.ts";
+import { addTask } from "../services/tasks.service.ts";
 
 type AddTaskProps = {
     tasks: TaskType[];
@@ -10,30 +11,6 @@ type AddTaskProps = {
 function AddTask({ tasks, setTasks }: AddTaskProps) {
     const [taskName, setTaskName] = useState('');
     const [error, setError] = useState('');
-
-    /**
-     * Adds a new task to the server.
-     *
-     * @param {string} taskName - The name of the task to add.
-     * @returns {Promise<TaskType>} A promise that resolves to the added task.
-     * @throws Will throw an error if the server response is not ok.
-     */
-    const addTask = async (taskName: string): Promise<TaskType> => {
-        const response = await fetch('http://localhost:3000/api/tasks', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ title: taskName })
-        });
-
-            if (!response.ok) {
-                const errorData = await response.json();
-                return Promise.reject(errorData.errors[0]);
-            }
-
-            return await response.json();
-    }
 
     /**
      * Handles the click event of the add task button.

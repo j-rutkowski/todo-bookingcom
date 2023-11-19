@@ -1,5 +1,6 @@
 import './Task.scss';
 import { TaskType } from "../../../shared/models/TaskType.ts";
+import { removeTask, updateTask } from "../services/tasks.service.ts";
 
 type TaskProps = {
     task: TaskType;
@@ -8,53 +9,6 @@ type TaskProps = {
 }
 
 function Task({ task, tasks, setTasks }: TaskProps) {
-
-    /**
-     * Updates a task on the server.
-     *
-     * @param {TaskType} task - The task to update.
-     * @returns {Promise<TaskType>} A promise that resolves to the updated task.
-     * @throws Will throw an error if the server response is not ok.
-     */
-    const updateTask = async (task: TaskType): Promise<TaskType> => {
-        const response = await fetch(`http://localhost:3000/api/tasks/${task.id}`, {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(task)
-        })
-
-        if (!response.ok) {
-            const errorData = await response.json();
-            return Promise.reject(errorData.errors[0]);
-        }
-
-        return await response.json();
-    }
-
-    /**
-     * Removes a task from the server.
-     *
-     * @param {number} id - The id of the task to remove.
-     * @returns {Promise<void>} A promise that resolves when the task is removed.
-     * @throws Will throw an error if the server response is not ok.
-     */
-    const removeTask = async (id: number): Promise<void> => {
-        const response = await fetch(`http://localhost:3000/api/tasks/${id}`, {
-            method: 'DELETE',
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        })
-
-        if (!response.ok) {
-            const errorData = await response.json();
-            return Promise.reject(errorData.errors[0]);
-        }
-
-        return Promise.resolve();
-    }
 
     /**
      * Handles the click event of a task.
@@ -70,7 +24,7 @@ function Task({ task, tasks, setTasks }: TaskProps) {
                 setTasks(updatedTasks);
             })
             .catch(error => {
-                console.log(error.msg);
+                console.error(error.msg);
             });
     }
 
@@ -86,7 +40,7 @@ function Task({ task, tasks, setTasks }: TaskProps) {
                 setTasks(updatedTasks);
             })
             .catch(error => {
-                console.log(error.msg);
+                console.error(error.msg);
             });
     }
 

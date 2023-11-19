@@ -3,31 +3,10 @@ import { TaskType } from "../../shared/models/TaskType.ts";
 import { useEffect, useState } from "react";
 import Task from './components/Task.tsx';
 import AddTask from "./components/AddTask.tsx";
+import { fetchTasks } from "./services/tasks.service.ts";
 
 function App() {
     const [tasks, setTasks] = useState<TaskType[]>([]);
-
-    /**
-     * Fetches tasks from the server.
-     *
-     * @returns {Promise<TaskType[]>} A promise that resolves to an array of tasks.
-     * @throws Will throw an error if the server response is not ok.
-     */
-    const fetchTasks = async (): Promise<TaskType[]> => {
-        const response = await fetch('http://localhost:3000/api/tasks', {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        });
-
-        if (!response.ok) {
-            const errorData = await response.json();
-            return Promise.reject(errorData.errors[0]);
-        }
-
-        return await response.json();
-    }
 
     /**
      * Fetches tasks from the server when the component mounts.
@@ -39,7 +18,7 @@ function App() {
                 setTasks(tasks);
             })
             .catch(error => {
-                console.log(error);
+                console.error(error.msg);
             });
     }, []);
 
