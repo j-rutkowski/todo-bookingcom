@@ -1,5 +1,5 @@
 import express, { NextFunction, Request, Response } from 'express';
-import todoRoutes from './routes/todos';
+import taskRoutes from './routes/tasks';
 import cors from 'cors';
 
 const app = express();
@@ -7,7 +7,7 @@ const port = process.env.PORT || 3000;
 
 app.use(cors()); // Enable CORS
 app.use(express.json()); // Enable JSON parsing in the request body
-app.use('/api/todos', todoRoutes); // Mount the Task API routes
+app.use('/api/tasks', taskRoutes); // Mount the Task API routes
 
 // Handle internal server errors
 app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
