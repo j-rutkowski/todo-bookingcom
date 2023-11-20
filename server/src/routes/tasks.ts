@@ -21,6 +21,12 @@ const idValidators = [
     check('id').isInt({ min: 1 }).withMessage('ID must be greater than 0'),
 ];
 
+/**
+ * POST endpoint /api/tasks
+ * Create a new Task
+ * @param title
+ * @returns the created Task
+ */
 router.post('/', titleValidators, validateRequest, async (req: Request, res: Response) => {
     const title = req.body.title;
     const task = await prisma.task.create({
@@ -32,12 +38,23 @@ router.post('/', titleValidators, validateRequest, async (req: Request, res: Res
     res.status(201).json(task);
 });
 
+/**
+ * GET endpoint /api/tasks
+ * Get all Tasks
+ * @returns all Tasks
+ */
 router.get('/', validateRequest, async (req: Request, res: Response) => {
     const tasks = await prisma.task.findMany();
 
     res.json(tasks);
 });
 
+/**
+ * GET endpoint /api/tasks/:id
+ * Get a single Task by ID
+ * @param id
+ * @returns the Task with the given ID
+ */
 router.get('/:id', idValidators, validateRequest, async (req: Request, res: Response) => {
     const id = parseInt(req.params.id);
     const task = await prisma.task.findUnique({
@@ -53,6 +70,14 @@ router.get('/:id', idValidators, validateRequest, async (req: Request, res: Resp
     }
 });
 
+/**
+ * PUT endpoint /api/tasks/:id
+ * Update a Task by ID
+ * @param id
+ * @param title
+ * @param completed
+ * @returns the updated Task
+ */
 router.put('/:id', [...idValidators, ...titleValidators, ...completedValidators], validateRequest, async (req: Request, res: Response) => {
     const id = parseInt(req.params.id);
     const title = req.body.title;
@@ -75,6 +100,12 @@ router.put('/:id', [...idValidators, ...titleValidators, ...completedValidators]
     }
 });
 
+/**
+ * DELETE endpoint /api/tasks/:id
+ * Delete a Task by ID
+ * @param id
+ * @returns 204 No Content
+ */
 router.delete('/:id', idValidators, validateRequest, async (req: Request, res: Response) => {
     const id = parseInt(req.params.id);
 
