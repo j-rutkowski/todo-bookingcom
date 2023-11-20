@@ -1,10 +1,9 @@
 import { Router, Request, Response } from 'express';
 import { body, check } from 'express-validator';
 import { validateRequest } from '../middlewares/validateRequest';
-import { TaskList } from "../../../shared/models/TaskList";
+import prisma from "../lib/prisma";
 
 const router = Router();
-const taskList = new TaskList();
 
 const titleValidators = [
     body('title').exists().withMessage('Title is required'),
@@ -22,18 +21,30 @@ const idValidators = [
     check('id').isInt({ min: 1 }).withMessage('ID must be greater than 0'),
 ];
 
-router.post('/', titleValidators, validateRequest, (req: Request, res: Response) => {
-    const task = taskList.add(req.body.title);
+router.post('/', titleValidators, validateRequest, async (req: Request, res: Response) => {
+    const title = req.body.title;
+    const task = await prisma.task.create({
+        data: {
+            title: title,
+        }
+    });
+
     res.status(201).json(task);
 });
 
-router.get('/', validateRequest, (req: Request, res: Response) => {
-    res.json(taskList.getAll());
+router.get('/', validateRequest, async (req: Request, res: Response) => {
+    const tasks = await prisma.task.findMany();
+
+    res.json(tasks);
 });
 
-router.get('/:id', idValidators, validateRequest, (req: Request, res: Response) => {
+router.get('/:id', idValidators, validateRequest, async (req: Request, res: Response) => {
     const id = parseInt(req.params.id);
-    const task = taskList.getById(id);
+    const task = await prisma.task.findUnique({
+        where: {
+            id: id,
+        }
+    });
 
     if (!task) {
         res.status(404).send('Task not found');
@@ -42,25 +53,40 @@ router.get('/:id', idValidators, validateRequest, (req: Request, res: Response) 
     }
 });
 
-router.put('/:id', [...idValidators, ...titleValidators, ...completedValidators], validateRequest, (req: Request, res: Response) => {
+router.put('/:id', [...idValidators, ...titleValidators, ...completedValidators], validateRequest, async (req: Request, res: Response) => {
     const id = parseInt(req.params.id);
     const title = req.body.title;
     const completed = req.body.completed;
-    const task = taskList.updateById(id, title, completed);
 
-    if (!task) {
-        res.status(404).send('Task not found');
-    } else {
+    try {
+        const task = await prisma.task.update({
+            where: {
+                id: id,
+            },
+            data: {
+                title: title,
+                completed: completed,
+            }
+        });
+
         res.json(task);
+    } catch (error) {
+        res.status(404).send('Task not found');
     }
 });
 
-router.delete('/:id', idValidators, validateRequest, (req: Request, res: Response) => {
+router.delete('/:id', idValidators, validateRequest, async (req: Request, res: Response) => {
     const id = parseInt(req.params.id);
 
-    if (taskList.removeById(id)) {
+    try {
+        await prisma.task.delete({
+            where: {
+                id: id,
+            }
+        });
+
         res.status(204).send();
-    } else {
+    } catch (error) {
         res.status(404).send('Task not found');
     }
 });
