@@ -79,7 +79,7 @@ router.delete('/:id', idValidators, validateRequest, async (req: Request, res: R
     const id = parseInt(req.params.id);
 
     try {
-        const task = await prisma.task.delete({
+        await prisma.task.delete({
             where: {
                 id: id,
             }
