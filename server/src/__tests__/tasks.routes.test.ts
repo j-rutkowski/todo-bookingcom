@@ -1,6 +1,11 @@
 import request = require('supertest');
 import { server } from '../index';
 import { TaskType } from '../../../shared/models/TaskType';
+import prisma from "../lib/__mocks__/prisma";
+import { afterAll, describe, it, expect, vi } from 'vitest';
+
+// Mock Prisma client
+vi.mock('../lib/prisma');
 
 // Mock task for testing
 const mockTask: TaskType = {
@@ -17,6 +22,7 @@ afterAll(() => {
 describe('Task API Endpoints', () => {
     // Test POST endpoint
     it('should create a new Task', async () => {
+        prisma.task.create.mockResolvedValueOnce(mockTask);
         const response = await request(server)
             .post('/api/tasks')
             .send({ title: 'Test Task' });
@@ -72,6 +78,7 @@ describe('Task API Endpoints', () => {
 
     // Test GET endpoint
     it('should get all Tasks', async () => {
+        prisma.task.findMany.mockResolvedValueOnce([mockTask]);
         const response = await request(server).get('/api/tasks');
 
         expect(response.status).toBe(200);
@@ -80,13 +87,20 @@ describe('Task API Endpoints', () => {
 
     // Test GET by ID endpoint
     it('should get a Task by ID', async () => {
+        prisma.task.findUnique.mockResolvedValueOnce(mockTask);
         const response = await request(server).get('/api/tasks/1');
 
         expect(response.status).toBe(200);
         expect(response.body).toEqual(mockTask);
+        expect(prisma.task.findUnique).toHaveBeenCalledWith({
+            where: {
+                id: 1
+            }
+        });
     });
 
     it('should return 404 if no Task with given ID exists', async () => {
+        prisma.task.findUnique.mockResolvedValueOnce(null);
         const response = await request(server).get('/api/tasks/999');
 
         expect(response.status).toBe(404);
@@ -126,6 +140,9 @@ describe('Task API Endpoints', () => {
             title: 'Updated Task',
             completed: true,
         }
+        prisma.task.update.mockResolvedValueOnce(completedTask);
+        prisma.task.findUnique.mockResolvedValueOnce(completedTask);
+
         const response = await request(server)
             .put(`/api/tasks/${completedTask.id}`)
             .send({ title: completedTask.title, completed: completedTask.completed });
@@ -139,6 +156,10 @@ describe('Task API Endpoints', () => {
     });
 
     it('should return 404 if no Task with given ID exists', async () => {
+        prisma.task.update.mockImplementationOnce(() => {
+            throw new Error();
+        });
+
         const response = await request(server)
             .put('/api/tasks/999')
             .send(mockTask);
@@ -170,6 +191,10 @@ describe('Task API Endpoints', () => {
     });
 
     it('should return 404 if no Task with given ID exists', async () => {
+        prisma.task.delete.mockImplementationOnce(() => {
+            throw new Error();
+        });
+
         const response = await request(server).delete('/api/tasks/999');
 
         expect(response.status).toBe(404);

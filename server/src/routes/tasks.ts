@@ -1,7 +1,7 @@
 import { Router, Request, Response } from 'express';
 import { body, check } from 'express-validator';
 import { validateRequest } from '../middlewares/validateRequest';
-import { prisma } from "../lib/prisma";
+import prisma from "../lib/prisma";
 
 const router = Router();
 
@@ -57,34 +57,36 @@ router.put('/:id', [...idValidators, ...titleValidators, ...completedValidators]
     const id = parseInt(req.params.id);
     const title = req.body.title;
     const completed = req.body.completed;
-    const task = await prisma.task.update({
-        where: {
-            id: id,
-        },
-        data: {
-            title: title,
-            completed: completed,
-        }
-    });
 
-    if (!task) {
-        res.status(404).send('Task not found');
-    } else {
+    try {
+        const task = await prisma.task.update({
+            where: {
+                id: id,
+            },
+            data: {
+                title: title,
+                completed: completed,
+            }
+        });
+
         res.json(task);
+    } catch (error) {
+        res.status(404).send('Task not found');
     }
 });
 
 router.delete('/:id', idValidators, validateRequest, async (req: Request, res: Response) => {
     const id = parseInt(req.params.id);
-    const task = await prisma.task.delete({
-        where: {
-            id: id,
-        }
-    });
 
-    if (task) {
+    try {
+        const task = await prisma.task.delete({
+            where: {
+                id: id,
+            }
+        });
+
         res.status(204).send();
-    } else {
+    } catch (error) {
         res.status(404).send('Task not found');
     }
 });
