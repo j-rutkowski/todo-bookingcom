@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import Task from './components/Task.tsx';
 import AddTask from "./components/AddTask.tsx";
 import { fetchTasks } from "./services/tasks.service.ts";
+import { Reorder } from "framer-motion";
 
 function App() {
     const [tasks, setTasks] = useState<TaskType[]>([]);
@@ -26,7 +27,7 @@ function App() {
         <div className='container'>
             <h1>Your todo list</h1>
             <AddTask tasks={tasks} setTasks={setTasks} />
-            <ul className='task-list'>
+            <Reorder.Group values={tasks} onReorder={setTasks} className='task-list'>
                 {tasks
                     .sort((a, b) => {
                         if (a.completed === b.completed) {
@@ -44,7 +45,7 @@ function App() {
                               setTasks={setTasks}
                         />
                 )}
-            </ul>
+            </Reorder.Group>
         </div>
     )
 }
