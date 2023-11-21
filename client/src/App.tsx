@@ -1,5 +1,5 @@
 import './App.scss'
-import { TaskType } from "../../shared/models/TaskType.ts";
+import { TaskType } from "./types/TaskType.ts";
 import { useEffect, useState } from "react";
 import Task from './components/Task.tsx';
 import AddTask from "./components/AddTask.tsx";

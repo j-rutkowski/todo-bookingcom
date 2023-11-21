@@ -1,5 +1,5 @@
 import './Task.scss';
-import { TaskType } from "../../../shared/models/TaskType.ts";
+import { TaskType } from "../types/TaskType.ts";
 import { removeTask, updateTask } from "../services/tasks.service.ts";
 import { Reorder } from 'framer-motion';
 
