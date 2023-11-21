@@ -24,7 +24,7 @@ describe('Task API Endpoints', () => {
     it('should create a new Task', async () => {
         prisma.task.create.mockResolvedValueOnce(mockTask);
         const response = await request(server)
-            .post('/api/tasks')
+            .post('/api/task')
             .send({ title: 'Test Task' });
 
         expect(response.status).toBe(201);
@@ -34,7 +34,7 @@ describe('Task API Endpoints', () => {
 
     it('should return 400 if title is not provided', async () => {
         const response = await request(server)
-            .post('/api/tasks')
+            .post('/api/task')
             .send({});
 
         expect(response.status).toBe(400);
@@ -48,7 +48,7 @@ describe('Task API Endpoints', () => {
 
     it('should return 400 if title is not a string', async () => {
         const response = await request(server)
-            .post('/api/tasks')
+            .post('/api/task')
             .send({ title: 123 });
 
         expect(response.status).toBe(400);
@@ -63,7 +63,7 @@ describe('Task API Endpoints', () => {
 
     it('should return 400 if title is longer than 100 chars', async () => {
         const response = await request(server)
-            .post('/api/tasks')
+            .post('/api/task')
             .send({ title: 'a'.repeat(101) });
 
         expect(response.status).toBe(400);
@@ -79,7 +79,7 @@ describe('Task API Endpoints', () => {
     // Test GET endpoint
     it('should get all Tasks', async () => {
         prisma.task.findMany.mockResolvedValueOnce([mockTask]);
-        const response = await request(server).get('/api/tasks');
+        const response = await request(server).get('/api/task');
 
         expect(response.status).toBe(200);
         expect(response.body).toEqual([mockTask]);
@@ -88,7 +88,7 @@ describe('Task API Endpoints', () => {
     // Test GET by ID endpoint
     it('should get a Task by ID', async () => {
         prisma.task.findUnique.mockResolvedValueOnce(mockTask);
-        const response = await request(server).get('/api/tasks/1');
+        const response = await request(server).get('/api/task/1');
 
         expect(response.status).toBe(200);
         expect(response.body).toEqual(mockTask);
@@ -101,14 +101,14 @@ describe('Task API Endpoints', () => {
 
     it('should return 404 if no Task with given ID exists', async () => {
         prisma.task.findUnique.mockResolvedValueOnce(null);
-        const response = await request(server).get('/api/tasks/999');
+        const response = await request(server).get('/api/task/999');
 
         expect(response.status).toBe(404);
         expect(response.text).toBe('Task not found');
     });
 
     it('should return 400 if id is not an integer', async () => {
-        const response = await request(server).get('/api/tasks/string');
+        const response = await request(server).get('/api/task/string');
 
         expect(response.status).toBe(400);
         expect(response.body.errors).toContainEqual({
@@ -121,7 +121,7 @@ describe('Task API Endpoints', () => {
     });
 
     it('should return 400 if id is less than 1', async () => {
-        const response = await request(server).get('/api/tasks/0');
+        const response = await request(server).get('/api/task/0');
 
         expect(response.status).toBe(400);
         expect(response.body.errors).toContainEqual({
@@ -144,11 +144,11 @@ describe('Task API Endpoints', () => {
         prisma.task.findUnique.mockResolvedValueOnce(completedTask);
 
         const response = await request(server)
-            .put(`/api/tasks/${completedTask.id}`)
+            .put(`/api/task/${completedTask.id}`)
             .send({ title: completedTask.title, completed: completedTask.completed });
 
         const updatedTask = await request(server)
-            .get(`/api/tasks/${completedTask.id}`);
+            .get(`/api/task/${completedTask.id}`);
 
         expect(response.status).toBe(200);
         expect(response.body).toEqual(completedTask);
@@ -161,7 +161,7 @@ describe('Task API Endpoints', () => {
         });
 
         const response = await request(server)
-            .put('/api/tasks/999')
+            .put('/api/task/999')
             .send(mockTask);
 
         expect(response.status).toBe(404);
@@ -170,7 +170,7 @@ describe('Task API Endpoints', () => {
 
     it("should return 400 when updating a task with an invalid completed status", async () => {
         const response = await request(server)
-            .put(`/api/tasks/1`)
+            .put(`/api/task/1`)
             .send({ title: "New Title", completed: "invalid" });
 
         expect(response.status).toBe(400);
@@ -185,7 +185,7 @@ describe('Task API Endpoints', () => {
 
     // Test DELETE endpoint
     it('should delete a Task by ID', async () => {
-        const response = await request(server).delete('/api/tasks/1');
+        const response = await request(server).delete('/api/task/1');
 
         expect(response.status).toBe(204);
     });
@@ -195,7 +195,7 @@ describe('Task API Endpoints', () => {
             throw new Error();
         });
 
-        const response = await request(server).delete('/api/tasks/999');
+        const response = await request(server).delete('/api/task/999');
 
         expect(response.status).toBe(404);
     });
