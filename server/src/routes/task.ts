@@ -1,25 +1,9 @@
 import { Router, Request, Response } from 'express';
-import { body, check } from 'express-validator';
 import { validateRequest } from '../middlewares/validateRequest';
+import { titleValidations, completedValidations, idValidations } from '../validations';
 import prisma from "../lib/prisma";
 
 const router = Router();
-
-const titleValidators = [
-    body('title').exists().withMessage('Title is required'),
-    body('title').isString().withMessage('Title must be a string'),
-    body('title').isLength({ min: 1 }).withMessage('Title cannot be empty'),
-    body('title').isLength({ max: 100 }).withMessage('Title cannot be longer than 100 characters'),
-];
-const completedValidators = [
-    body('completed').exists().withMessage('Completed is required'),
-    body('completed').isBoolean().withMessage('Completed must be a boolean'),
-];
-const idValidators = [
-    check('id').exists().withMessage('ID is required'),
-    check('id').isInt().withMessage('ID must be an integer'),
-    check('id').isInt({ min: 1 }).withMessage('ID must be greater than 0'),
-];
 
 /**
  * @openapi
@@ -53,7 +37,7 @@ const idValidators = [
  *             schema:
  *               $ref: '#/components/schemas/ErrorResponse'
  */
-router.post('/', titleValidators, validateRequest, async (req: Request, res: Response) => {
+router.post('/', titleValidations, validateRequest, async (req: Request, res: Response) => {
     const title = req.body.title;
     const task = await prisma.task.create({
         data: {
@@ -87,7 +71,7 @@ router.post('/', titleValidators, validateRequest, async (req: Request, res: Res
  *             schema:
  *               $ref: '#/components/schemas/ErrorResponse'
  */
-router.get('/', validateRequest, async (req: Request, res: Response) => {
+router.get('/', async (req: Request, res: Response) => {
     const tasks = await prisma.task.findMany();
 
     res.json(tasks);
@@ -124,7 +108,7 @@ router.get('/', validateRequest, async (req: Request, res: Response) => {
  *       404:
  *         description: Task not found
  */
-router.get('/:id', idValidators, validateRequest, async (req: Request, res: Response) => {
+router.get('/:id', idValidations, validateRequest, async (req: Request, res: Response) => {
     const id = parseInt(req.params.id);
     const task = await prisma.task.findUnique({
         where: {
@@ -176,7 +160,7 @@ router.get('/:id', idValidators, validateRequest, async (req: Request, res: Resp
  *       404:
  *         description: Task not found
  */
-router.put('/:id', [...idValidators, ...titleValidators, ...completedValidators], validateRequest, async (req: Request, res: Response) => {
+router.put('/:id', idValidations, titleValidations, completedValidations, validateRequest, async (req: Request, res: Response) => {
     const id = parseInt(req.params.id);
     const title = req.body.title;
     const completed = req.body.completed;
@@ -225,7 +209,7 @@ router.put('/:id', [...idValidators, ...titleValidators, ...completedValidators]
  *       404:
  *         description: Task not found
  */
-router.delete('/:id', idValidators, validateRequest, async (req: Request, res: Response) => {
+router.delete('/:id', idValidations, validateRequest, async (req: Request, res: Response) => {
     const id = parseInt(req.params.id);
 
     try {
