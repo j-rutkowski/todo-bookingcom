@@ -1,6 +1,6 @@
 import request = require('supertest');
 import { server } from '../index';
-import { TaskType } from '../../../shared/models/TaskType';
+import { TaskType } from '../../../client/src/types/TaskType';
 import prisma from "../lib/__mocks__/prisma";
 import { afterAll, describe, it, expect, vi } from 'vitest';
 

@@ -1,6 +1,6 @@
-import { TaskType } from "../../../shared/models/TaskType.ts";
+import { TaskType } from "../types/TaskType.ts";
 
-const BASE_URL = 'http://localhost:3000/api/tasks';
+const BASE_URL = 'http://localhost:3000/api/task';
 
 /**
  * Adds a new task to the server.

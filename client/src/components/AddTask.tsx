@@ -1,6 +1,6 @@
 import './AddTask.scss';
 import { useState } from "react";
-import { TaskType } from "../../../shared/models/TaskType.ts";
+import { TaskType } from "../types/TaskType.ts";
 import { addTask } from "../services/tasks.service.ts";
 
 type AddTaskProps = {

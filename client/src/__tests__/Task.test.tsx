@@ -1,7 +1,7 @@
 import { describe, it, expect, afterEach, vitest } from 'vitest';
 import { render, fireEvent, cleanup, waitFor } from '@testing-library/react';
 import Task from '../components/Task';
-import { TaskType } from "../../../shared/models/TaskType.ts";
+import { TaskType } from "../types/TaskType.ts";
 
 describe('Task', () => {
     const originalFetch = global.fetch;

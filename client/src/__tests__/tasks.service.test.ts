@@ -1,6 +1,6 @@
 import { describe, it, expect, afterEach } from 'vitest';
 import { addTask, fetchTasks, updateTask, removeTask } from '../services/tasks.service';
-import { TaskType } from "../../../shared/models/TaskType.ts";
+import { TaskType } from "../types/TaskType.ts";
 
 describe('tasks.service', () => {
     const mockTask: TaskType = { id: 1, title: 'Test Task', completed: false };
