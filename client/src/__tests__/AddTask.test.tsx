@@ -44,7 +44,7 @@ describe('AddTask', () => {
         const { getByPlaceholderText } = render(<AddTask tasks={[]} setTasks={mockSetTasks} />);
         const input = getByPlaceholderText("Enter task's name");
         fireEvent.change(input, { target: { value: 'New Task' } });
-        fireEvent.keyDown(input, { key: 'Enter', code: 'Enter' });
+        fireEvent.submit(input);
         await waitFor(() => expect(mockSetTasks).toHaveBeenCalledWith([{ id: 1, title: 'New Task', completed: false }]));
     });
 
