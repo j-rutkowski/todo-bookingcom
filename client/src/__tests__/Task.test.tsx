@@ -1,8 +1,8 @@
 import { describe, it, expect, afterEach, vitest, vi } from 'vitest';
 import { render, fireEvent, cleanup, waitFor } from '@testing-library/react';
 import Task from '../components/Task';
-import { TaskType } from "../types/TaskType.ts";
-import { Reorder } from "framer-motion";
+import { TaskType } from '../types/TaskType.ts';
+import { Reorder } from 'framer-motion';
 
 describe('Task', () => {
     const originalFetch = global.fetch;

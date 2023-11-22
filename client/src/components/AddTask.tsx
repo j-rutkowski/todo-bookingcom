@@ -1,7 +1,7 @@
 import './AddTask.scss';
-import { useState } from "react";
-import { TaskType } from "../types/TaskType.ts";
-import { addTask } from "../services/tasks.service.ts";
+import { useState } from 'react';
+import { TaskType } from '../types/TaskType.ts';
+import { addTask } from '../services/tasks.service.ts';
 
 type AddTaskProps = {
     tasks: TaskType[];
@@ -27,7 +27,7 @@ function AddTask({ tasks, setTasks }: AddTaskProps) {
             .catch(error => {
                 setError(error.msg);
             });
-    }
+    };
 
     /**
      * Handles the key down event of the input field.
@@ -37,7 +37,7 @@ function AddTask({ tasks, setTasks }: AddTaskProps) {
         if (error)  {
             setError('');
         }
-    }
+    };
 
     return (
         <div className='add-task'>
@@ -61,7 +61,7 @@ function AddTask({ tasks, setTasks }: AddTaskProps) {
             </form>
             <span className={`add-task__error ${error ? '' : 'hidden'}`}>{error}</span>
         </div>
-    )
+    );
 }
 
 export default AddTask;

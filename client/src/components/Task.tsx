@@ -1,6 +1,6 @@
 import './Task.scss';
-import { TaskType } from "../types/TaskType.ts";
-import { removeTask, updateTask } from "../services/tasks.service.ts";
+import { TaskType } from '../types/TaskType.ts';
+import { removeTask, updateTask } from '../services/tasks.service.ts';
 import { Reorder } from 'framer-motion';
 
 type TaskProps = {
@@ -27,7 +27,7 @@ function Task({ task, tasks, setTasks }: TaskProps) {
             .catch(error => {
                 console.error(error.msg);
             });
-    }
+    };
 
     /**
      * Handles the deletion of a task.
@@ -43,7 +43,7 @@ function Task({ task, tasks, setTasks }: TaskProps) {
             .catch(error => {
                 console.error(error.msg);
             });
-    }
+    };
 
     return (
         <Reorder.Item value={task} drag={false} className={`task ${task.completed ? 'checked' : ''}`}>

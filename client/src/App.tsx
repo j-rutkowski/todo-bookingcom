@@ -1,10 +1,10 @@
-import './App.scss'
-import { TaskType } from "./types/TaskType.ts";
-import { useEffect, useState } from "react";
+import './App.scss';
+import { TaskType } from './types/TaskType.ts';
+import { useEffect, useState } from 'react';
 import Task from './components/Task.tsx';
-import AddTask from "./components/AddTask.tsx";
-import { fetchTasks } from "./services/tasks.service.ts";
-import { Reorder } from "framer-motion";
+import AddTask from './components/AddTask.tsx';
+import { fetchTasks } from './services/tasks.service.ts';
+import { Reorder } from 'framer-motion';
 
 function App() {
     const [tasks, setTasks] = useState<TaskType[]>([]);
@@ -47,7 +47,7 @@ function App() {
                 )}
             </Reorder.Group>
         </div>
-    )
+    );
 }
 
-export default App
+export default App;

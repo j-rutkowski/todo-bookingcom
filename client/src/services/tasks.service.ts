@@ -1,4 +1,4 @@
-import { TaskType } from "../types/TaskType.ts";
+import { TaskType } from '../types/TaskType.ts';
 
 const BASE_URL = 'http://localhost:3000/api/task';
 
@@ -24,7 +24,7 @@ export const addTask = async (taskName: string): Promise<TaskType> => {
     }
 
     return await response.json();
-}
+};
 
 /**
  * Fetches tasks from the server.
@@ -46,7 +46,7 @@ export const fetchTasks = async (): Promise<TaskType[]> => {
     }
 
     return await response.json();
-}
+};
 
 /**
  * Updates a task on the server.
@@ -62,7 +62,7 @@ export const updateTask = async (task: TaskType): Promise<TaskType> => {
             'Content-Type': 'application/json'
         },
         body: JSON.stringify(task)
-    })
+    });
 
     if (!response.ok) {
         const errorData = await response.json();
@@ -70,7 +70,7 @@ export const updateTask = async (task: TaskType): Promise<TaskType> => {
     }
 
     return await response.json();
-}
+};
 
 /**
  * Removes a task from the server.
@@ -85,7 +85,7 @@ export const removeTask = async (id: number): Promise<void> => {
         headers: {
             'Content-Type': 'application/json'
         }
-    })
+    });
 
     if (!response.ok) {
         const errorData = await response.json();
@@ -93,4 +93,4 @@ export const removeTask = async (id: number): Promise<void> => {
     }
 
     return Promise.resolve();
-}
+};
