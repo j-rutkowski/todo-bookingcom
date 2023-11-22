@@ -16,10 +16,8 @@ function AddTask({ tasks, setTasks }: AddTaskProps) {
      * Handles the click event of the add task button.
      * Calls the addTask function and updates the state based on the result.
      */
-    const handleSubmit = (formEvent?: React.FormEvent<HTMLFormElement>) => {
-        if (formEvent) {
-            formEvent.preventDefault();
-        }
+    const handleSubmit = (formEvent: React.FormEvent<HTMLFormElement>) => {
+        formEvent.preventDefault();
 
         addTask(taskName)
             .then((task: TaskType) => {
