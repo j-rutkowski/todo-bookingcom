@@ -1,4 +1,4 @@
-name: Client Unit Tests
+name: Client Workflow
 
 on:
   push:
@@ -30,4 +30,8 @@ jobs:
 
       - name: Run client tests
         run: npm run test:unit
+        working-directory: ./client
+
+      - name: Run linting
+        run: npm run lint
         working-directory: ./client

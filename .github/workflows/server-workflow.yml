@@ -31,3 +31,7 @@ jobs:
       - name: Run server tests
         run: npm run test:unit
         working-directory: ./server
+
+      - name: Run linting
+        run: npm run lint
+        working-directory: ./server
