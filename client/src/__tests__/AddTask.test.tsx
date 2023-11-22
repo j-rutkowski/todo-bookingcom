@@ -12,12 +12,12 @@ describe('AddTask', () => {
 
     it('renders without crashing', () => {
         const { getByPlaceholderText } = render(<AddTask tasks={[]} setTasks={() => {}} />);
-        expect(getByPlaceholderText("Enter task's name")).toBeDefined();
+        expect(getByPlaceholderText('Enter task\'s name')).toBeDefined();
     });
 
     it('handles input change', () => {
         const { getByPlaceholderText } = render(<AddTask tasks={[]} setTasks={() => {}} />);
-        const input = getByPlaceholderText("Enter task's name") as HTMLInputElement;
+        const input = getByPlaceholderText('Enter task\'s name') as HTMLInputElement;
         fireEvent.change(input, { target: { value: 'New Task' } });
         expect(input.value).toBe('New Task');
     });
@@ -29,7 +29,7 @@ describe('AddTask', () => {
 
         const mockSetTasks = vitest.fn();
         const { getByPlaceholderText, getByRole } = render(<AddTask tasks={[]} setTasks={mockSetTasks} />);
-        const input = getByPlaceholderText("Enter task's name");
+        const input = getByPlaceholderText('Enter task\'s name');
         fireEvent.change(input, { target: { value: 'New Task' } });
         fireEvent.click(getByRole('button'));
         await waitFor(() => expect(mockSetTasks).toHaveBeenCalledWith([{ id: 1, title: 'New Task', completed: false }]));
@@ -42,9 +42,9 @@ describe('AddTask', () => {
 
         const mockSetTasks = vitest.fn();
         const { getByPlaceholderText } = render(<AddTask tasks={[]} setTasks={mockSetTasks} />);
-        const input = getByPlaceholderText("Enter task's name");
+        const input = getByPlaceholderText('Enter task\'s name');
         fireEvent.change(input, { target: { value: 'New Task' } });
-        fireEvent.keyDown(input, { key: 'Enter', code: 'Enter' });
+        fireEvent.submit(input);
         await waitFor(() => expect(mockSetTasks).toHaveBeenCalledWith([{ id: 1, title: 'New Task', completed: false }]));
     });
 
@@ -55,7 +55,7 @@ describe('AddTask', () => {
 
         const mockSetTasks = vitest.fn();
         const { getByPlaceholderText, getByRole, getByText } = render(<AddTask tasks={[]} setTasks={mockSetTasks} />);
-        const input = getByPlaceholderText("Enter task's name");
+        const input = getByPlaceholderText('Enter task\'s name');
         fireEvent.change(input, { target: { value: 'New Task' } });
         fireEvent.click(getByRole('button'));
         await waitFor(() => expect(getByText('Error message')).toBeDefined());

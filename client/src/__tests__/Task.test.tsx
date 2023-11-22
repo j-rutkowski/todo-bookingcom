@@ -1,7 +1,8 @@
-import { describe, it, expect, afterEach, vitest } from 'vitest';
+import { describe, it, expect, afterEach, vitest, vi } from 'vitest';
 import { render, fireEvent, cleanup, waitFor } from '@testing-library/react';
 import Task from '../components/Task';
-import { TaskType } from "../types/TaskType.ts";
+import { TaskType } from '../types/TaskType.ts';
+import { Reorder } from 'framer-motion';
 
 describe('Task', () => {
     const originalFetch = global.fetch;
@@ -12,10 +13,17 @@ describe('Task', () => {
     afterEach(() => {
         cleanup();
         global.fetch = originalFetch;
+        vi.resetAllMocks();
     });
 
-    it('renders without crashing', () => {
-        const { getByText } = render(<Task task={mockTask} tasks={tasks} setTasks={mockSetTasks} />);
+    const renderInReorderGroup = () => render(
+        <Reorder.Group onReorder={mockSetTasks} values={tasks}>
+            <Task task={mockTask} tasks={tasks} setTasks={mockSetTasks} />
+        </Reorder.Group>
+    );
+
+        it('renders without crashing', () => {
+        const { getByText } = renderInReorderGroup();
         expect(getByText('Test Task')).toBeDefined();
     });
 
@@ -24,7 +32,7 @@ describe('Task', () => {
             return new Response(JSON.stringify({ ...mockTask, completed: true }));
         };
 
-        const { getByText } = render(<Task task={mockTask} tasks={tasks} setTasks={mockSetTasks} />);
+        const { getByText } = renderInReorderGroup();
         fireEvent.click(getByText('Test Task'));
         await waitFor(() => expect(mockSetTasks).toHaveBeenCalledWith([{ ...mockTask, completed: true }]));
     });
@@ -34,7 +42,7 @@ describe('Task', () => {
             return new Response(JSON.stringify({}));
         };
 
-        const { getByRole } = render(<Task task={mockTask} tasks={tasks} setTasks={mockSetTasks} />);
+        const { getByRole } = renderInReorderGroup();
         fireEvent.click(getByRole('button'));
         await waitFor(() => expect(mockSetTasks).toHaveBeenCalledWith([]));
     });
