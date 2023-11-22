@@ -45,3 +45,6 @@ npm run dev
 ```
 
 Now you can access the application at http://localhost:5173/
+
+### API Documentation
+Once the server is running, you can access the documentation at http://localhost:3000/api-docs/
