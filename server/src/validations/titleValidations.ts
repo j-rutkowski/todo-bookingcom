@@ -1,4 +1,4 @@
-import { body } from "express-validator";
+import { body } from 'express-validator';
 
 export const titleValidations = [
     body('title').exists().withMessage('Title is required'),

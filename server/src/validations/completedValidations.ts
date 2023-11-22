@@ -1,4 +1,4 @@
-import { body } from "express-validator";
+import { body } from 'express-validator';
 
 export const completedValidations = [
     body('completed').exists().withMessage('Completed is required'),

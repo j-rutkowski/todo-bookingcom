@@ -1,7 +1,7 @@
 import request = require('supertest');
 import { server } from '../index';
 import { TaskType } from '../../../client/src/types/TaskType';
-import prisma from "../lib/__mocks__/prisma";
+import prisma from '../lib/__mocks__/prisma';
 import { afterAll, describe, it, expect, vi } from 'vitest';
 
 // Mock Prisma client
@@ -39,10 +39,10 @@ describe('Task API Endpoints', () => {
 
         expect(response.status).toBe(400);
         expect(response.body.errors).toContainEqual({
-            "type": "field",
-            "msg": "Title is required",
-            "path": "title",
-            "location": "body"
+            'type': 'field',
+            'msg': 'Title is required',
+            'path': 'title',
+            'location': 'body'
         });
     });
 
@@ -53,11 +53,11 @@ describe('Task API Endpoints', () => {
 
         expect(response.status).toBe(400);
         expect(response.body.errors).toContainEqual({
-            "type": "field",
-            "value": 123,
-            "msg": "Title must be a string",
-            "path": "title",
-            "location": "body"
+            'type': 'field',
+            'value': 123,
+            'msg': 'Title must be a string',
+            'path': 'title',
+            'location': 'body'
         });
     });
 
@@ -68,11 +68,11 @@ describe('Task API Endpoints', () => {
 
         expect(response.status).toBe(400);
         expect(response.body.errors).toContainEqual({
-            "type": "field",
-            "value": "a".repeat(101),
-            "msg": "Title cannot be longer than 100 characters",
-            "path": "title",
-            "location": "body"
+            'type': 'field',
+            'value': 'a'.repeat(101),
+            'msg': 'Title cannot be longer than 100 characters',
+            'path': 'title',
+            'location': 'body'
         });
     });
 
@@ -112,11 +112,11 @@ describe('Task API Endpoints', () => {
 
         expect(response.status).toBe(400);
         expect(response.body.errors).toContainEqual({
-            "type": "field",
-            "value": "string",
-            "msg": "ID must be an integer",
-            "path": "id",
-            "location": "params"
+            'type': 'field',
+            'value': 'string',
+            'msg': 'ID must be an integer',
+            'path': 'id',
+            'location': 'params'
         });
     });
 
@@ -125,11 +125,11 @@ describe('Task API Endpoints', () => {
 
         expect(response.status).toBe(400);
         expect(response.body.errors).toContainEqual({
-            "type": "field",
-            "value": "0",
-            "msg": "ID must be greater than 0",
-            "path": "id",
-            "location": "params"
+            'type': 'field',
+            'value': '0',
+            'msg': 'ID must be greater than 0',
+            'path': 'id',
+            'location': 'params'
         });
     });
 
@@ -139,7 +139,7 @@ describe('Task API Endpoints', () => {
             id: 1,
             title: 'Updated Task',
             completed: true,
-        }
+        };
         prisma.task.update.mockResolvedValueOnce(completedTask);
         prisma.task.findUnique.mockResolvedValueOnce(completedTask);
 
@@ -168,18 +168,18 @@ describe('Task API Endpoints', () => {
         expect(response.text).toBe('Task not found');
     });
 
-    it("should return 400 when updating a task with an invalid completed status", async () => {
+    it('should return 400 when updating a task with an invalid completed status', async () => {
         const response = await request(server)
-            .put(`/api/task/1`)
-            .send({ title: "New Title", completed: "invalid" });
+            .put('/api/task/1')
+            .send({ title: 'New Title', completed: 'invalid' });
 
         expect(response.status).toBe(400);
         expect(response.body.errors).toContainEqual({
-            "type": "field",
-            "value": "invalid",
-            "msg": "Completed must be a boolean",
-            "path": "completed",
-            "location": "body"
+            'type': 'field',
+            'value': 'invalid',
+            'msg': 'Completed must be a boolean',
+            'path': 'completed',
+            'location': 'body'
         });
     });
 
