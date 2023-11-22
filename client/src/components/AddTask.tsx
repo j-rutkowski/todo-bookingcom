@@ -16,7 +16,11 @@ function AddTask({ tasks, setTasks }: AddTaskProps) {
      * Handles the click event of the add task button.
      * Calls the addTask function and updates the state based on the result.
      */
-    const handleClick = () => {
+    const handleSubmit = (formEvent?: React.FormEvent<HTMLFormElement>) => {
+        if (formEvent) {
+            formEvent.preventDefault();
+        }
+
         addTask(taskName)
             .then((task: TaskType) => {
                 setTaskName('');
@@ -29,43 +33,34 @@ function AddTask({ tasks, setTasks }: AddTaskProps) {
 
     /**
      * Handles the key down event of the input field.
-     * Calls the handleClick function if the user presses the enter key.
-     * @param {React.KeyboardEvent<HTMLInputElement>} e - The key down event.
+     * Removes the error message if there is one.
      */
-    const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    const handleKeyDown = () => {
         if (error)  {
             setError('');
-        }
-
-        if (e.key === 'Enter') {
-            // Blur the input when submitting the task
-            const input = e.target as HTMLInputElement;
-            input.blur();
-
-            handleClick();
         }
     }
 
     return (
         <div className='add-task'>
-            <div className='add-task__container'>
+            <form className='add-task__form' onSubmit={e => handleSubmit(e)}>
                 <input
                     type='text'
                     placeholder="Enter task's name"
                     value={taskName}
                     onChange={(e) => setTaskName(e.target.value)}
-                    onKeyDown={(e) => handleKeyDown(e)}
+                    onKeyDown={handleKeyDown}
                     className='add-task__input'
                 />
                 <button
+                    type='submit'
                     className='add-task__button'
-                    onClick={handleClick}
                 >
                     <svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 448 512">
                         <path fill="#FFFFFF" d="M256 80c0-17.7-14.3-32-32-32s-32 14.3-32 32V224H48c-17.7 0-32 14.3-32 32s14.3 32 32 32H192V432c0 17.7 14.3 32 32 32s32-14.3 32-32V288H400c17.7 0 32-14.3 32-32s-14.3-32-32-32H256V80z"/>
                     </svg>
                 </button>
-            </div>
+            </form>
             <span className={`add-task__error ${error ? '' : 'hidden'}`}>{error}</span>
         </div>
     )
