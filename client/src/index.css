@@ -9,8 +9,8 @@
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     -webkit-text-size-adjust: 100%;
-    --color-primary-blue: 0, 159, 227;
-    --color-secondary-blue: 0, 53, 128;
+    --color-primary-blue: 0, 108, 228;
+    --color-secondary-blue: 0, 59, 149;
     --color-primary-yellow: 254, 186, 2;
 }
 
@@ -30,12 +30,16 @@ body {
     place-items: center;
     min-width: 320px;
     min-height: 100vh;
-    background: rgba(var(--color-secondary-blue), 0.8);
+    background: rgb(var(--color-secondary-blue));
 }
 
 h1 {
-    font-size: 3.2em;
+    font-size: 3em;
     line-height: 1.1;
+
+    @media (max-width: 768px) {
+        font-size: 2.5em;
+    }
 }
 
 button {

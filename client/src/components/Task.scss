@@ -16,6 +16,7 @@
         width: 100%;
         position: relative;
         transition: all 0.3s ease-in-out;
+        text-overflow: ellipsis;
 
         &:hover {
             cursor: pointer;
