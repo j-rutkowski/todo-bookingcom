@@ -27,13 +27,13 @@ jobs:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
     - name: Execute client unit tests
-    - run: |
+      run: |
         npm ci
         npm run test:unit
-    - working-directory: ./client
+      working-directory: ./client
     - name: Execute server unit tests
-    - run: |
+      run: |
         npm ci
         npm run test:unit
-    - working-directory: ./server
+      working-directory: ./server
     
